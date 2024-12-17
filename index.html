@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L7YFG4K17Z"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-L7YFG4K17Z');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYC1001 Flashcards</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-bg-color: #f8fef8;
+            --card-bg-color: #ffffff;
+            --button-color: #81c784; /* Light green */
+            --button-hover-color: #4caf50;
+            --text-color: #333333;
+            --highlight-color: #4caf50;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--highlight-color);
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .home-page, .quiz-page {
+            display: none;
+        }
+
+        .visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: var(--button-color);
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: var(--button-hover-color);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .red-button {
+            background-color: transparent;
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        .red-button:hover {
+            background-color: #f4433610;
+            color: #d32f2f;
+        }
+
+        .card {
+            background: var(--card-bg-color);
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            text-align: center;
+            width: 300px;
+            margin-bottom: 20px;
+            animation: fade-in 0.5s ease-in-out;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .counter {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--highlight-color);
+            margin-top: 15px;
+        }
+
+        /* Fade-in animation */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Home Page -->
+    <div class="home-page visible" id="home">
+        <h1>Psychology Flashcards</h1>
+        <p>Strengthen your mind. Good luck!</p>
+        <button class="button" id="start-quiz">Start Studying</button>
+    </div>
+
+    <!-- Quiz Page -->
+    <div class="quiz-page" id="quiz">
+        <div class="card">
+            <p id="question">What are the three main types of memory?</p>
+        </div>
+        <div>
+            <button class="button" id="show-answer">Show Answer</button>
+            <button class="button" id="next">Next Question</button>
+            <button class="button red-button" id="remove-card">Remove Card</button>
+        </div>
+        <div class="counter" id="counter">Cards Remaining: 49</div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { question: "What are the three main types of memory?", answer: "Sensory memory, short-term memory (working memory), and long-term memory." },
+{ question: "What is the duration and capacity of short-term memory?", answer: "Duration is ~20 seconds; capacity is 7 ± 2 chunks of information." },
+{ question: "What is the difference between iconic and echoic memory?", answer: "Iconic memory is visual, while echoic memory is auditory." },
+{ question: "What are the three types of long-term memory?", answer: "Episodic (specific events), semantic (general knowledge), and procedural (skills)." },
+{ question: "Define retrieval cue and give an example.", answer: "A stimulus that helps access memories, like a familiar song triggering a memory." },
+{ question: "What are the seven sins of memory identified by Daniel Schacter?", answer: "Transience, absentmindedness, blocking, misattribution, suggestibility, bias, and persistence." },
+{ question: "What is retrograde amnesia?", answer: "The inability to remember events prior to head trauma." },
+{ question: "Define anterograde amnesia.", answer: "The inability to form new memories after head trauma." },
+{ question: "What is confabulation in memory?", answer: "Distortion of memory caused by reconstructing present perspectives." },
+{ question: "Explain the concept of blocking in memory.", answer: "It refers to the temporary inaccessibility of stored information." },
+{ question: "What is the role of maintenance rehearsal in memory?", answer: "It keeps information active in working memory for short-term recall." },
+          
+{ question: "Who is known for developing the concept of classical conditioning?", answer: "Ivan Pavlov." },
+{ question: "Define neutral stimulus in classical conditioning.", answer: "A stimulus that does not initially trigger a response." },
+{ question: "What is operant conditioning and who developed it?", answer: "Learning influenced by outcomes; developed by B.F. Skinner." },
+{ question: "What is the difference between positive and negative reinforcement?", answer: "Positive adds a stimulus; negative removes an aversive stimulus to strengthen behavior." },
+{ question: "Name two schedules of reinforcement in operant conditioning.", answer: "Fixed ratio and variable interval." },
+{ question: "Define shaping in operant conditioning.", answer: "Reinforcing successive approximations of a desired behavior." },
+{ question: "What is observational learning?", answer: "Learning through observing and imitating others." },
+{ question: "Who introduced social learning theory?", answer: "Albert Bandura." },
+{ question: "What is extinction in classical conditioning?", answer: "The gradual disappearance of a conditioned response." },
+{ question: "What is the acquisition curve in learning?", answer: "A graph showing the speed at which a conditioned response is learned." },
+{ question: "Explain systematic desensitization and give an example.", answer: "Gradually exposing someone to a feared stimulus, e.g., fear of flying." },
+{ question: "What is stimulus generalization?", answer: "Responding to a stimulus similar to the conditioned stimulus." },
+          
+{ question: "What is infinite generativity in language?", answer: "The ability to create endless meaningful sentences." },
+{ question: "What is the critical period for language acquisition?", answer: "Between 18 months and the onset of puberty." },
+{ question: "What are the four rule systems of language?", answer: "Phonology, morphology, syntax, and semantics." },
+{ question: "Name two regions of the brain involved in language.", answer: "Broca's area (speech production) and Wernicke's area (language comprehension)." },
+{ question: "What is deductive reasoning?", answer: "Reasoning from a general principle to a specific conclusion." },
+{ question: "What is inductive reasoning?", answer: "Reasoning from specific examples to form a general principle." },
+{ question: "What is the availability heuristic?", answer: "Judging likelihood based on how easily examples come to mind." },
+{ question: "Define hindsight bias.", answer: "Believing an event was predictable after it has occurred." },
+{ question: "What is belief perseverance?", answer: "Holding onto beliefs despite contrary evidence." },
+{ question: "What is the gambler's fallacy?", answer: "Believing past events influence future outcomes in random processes." },
+{ question: "How do emotions influence decision-making?", answer: "Emotions can distort judgments and lead to biases like overconfidence." },
+{ question: "What is confirmatory bias?", answer: "Favoring information that supports existing beliefs." },
+{ question: "Define problem-solving and list the key steps.", answer: "Problem-solving involves analyzing, formulating, evaluating, and implementing solutions." },
+          
+{ question: "What is the self-medication theory for PTSD and SUD?", answer: "Substance use alleviates PTSD symptoms like avoidance and arousal." },
+{ question: "What is the high-risk hypothesis for SUD preceding PTSD?", answer: "Substance use leads to high-risk behavior, increasing trauma exposure." },
+{ question: "Define the susceptibility hypothesis.", answer: "Substance use increases vulnerability to PTSD post-trauma." },
+{ question: "What are the two indirect variables in PTSD-SUD comorbidity?", answer: "Childhood trauma and lack of social support." },
+{ question: "How does childhood trauma impact PTSD and SUD?", answer: "Trauma during development increases symptom severity and SUD risk." },
+{ question: "What is the integrated model for PTSD and SUD treatment?", answer: "Treating trauma and substance use simultaneously." },
+{ question: "What is the sequential model for PTSD-SUD treatment?", answer: "SUD is treated first, followed by PTSD treatment." },
+{ question: "What is the main challenge posed by mental health stigmatization?", answer: "It prevents PSP from seeking treatment due to fear of consequences." },
+{ question: "What is label avoidance in mental health stigma?", answer: "Ignoring symptoms to avoid negative labels." },
+{ question: "How does perceived social support impact PTSD symptoms?", answer: "Low perceived support is linked to more severe symptoms." },
+{ question: "Why is suicide risk higher for PSP with PTSD and SUD?", answer: "Factors include less fear of death, sleep disturbances, and access to lethal means." },
+{ question: "What future research is needed for PTSD and SUD in PSP?", answer: "Studies on critical incident stress management and integrated treatments." },
+        ];
+
+        const homePage = document.getElementById("home");
+        const quizPage = document.getElementById("quiz");
+        const questionElement = document.getElementById("question");
+        const showAnswerButton = document.getElementById("show-answer");
+        const nextButton = document.getElementById("next");
+        const removeCardButton = document.getElementById("remove-card");
+        const counterElement = document.getElementById("counter");
+
+        let currentIndex = 0;
+        let remainingCards = flashcards.length;
+
+        function updateCounter() {
+            counterElement.textContent = `Cards Remaining: ${remainingCards}`;
+        }
+
+        function loadCard() {
+            if (flashcards.length === 0) {
+                questionElement.textContent = "All cards completed!";
+                showAnswerButton.style.display = "none";
+                nextButton.style.display = "none";
+                removeCardButton.style.display = "none";
+                return;
+            }
+            currentIndex = Math.floor(Math.random() * flashcards.length);
+            questionElement.textContent = flashcards[currentIndex].question;
+            showAnswerButton.textContent = "Show Answer";
+        }
+
+        document.getElementById("start-quiz").addEventListener("click", () => {
+            homePage.classList.remove("visible");
+            quizPage.classList.add("visible");
+            loadCard();
+        });
+
+        showAnswerButton.addEventListener("click", () => {
+            if (showAnswerButton.textContent === "Show Answer") {
+                questionElement.textContent = flashcards[currentIndex].answer;
+                showAnswerButton.textContent = "Show Question";
+            } else {
+                questionElement.textContent = flashcards[currentIndex].question;
+                showAnswerButton.textContent = "Show Answer";
+            }
+        });
+
+        nextButton.addEventListener("click", loadCard);
+
+        removeCardButton.addEventListener("click", () => {
+            flashcards.splice(currentIndex, 1);
+            remainingCards--;
+            updateCounter();
+            loadCard();
+        });
+
+        updateCounter();
+    </script>
+</body>
+</html>
